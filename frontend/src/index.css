@@ -1,0 +1,504 @@
+body {
+  font-family: 'Jost', sans-serif;
+  background: #F7F8FD;
+  padding: 7vw 5vw;
+  margin: 0;
+}
+
+.body-1 {
+  font-size: 16px;
+  line-height: 23px;
+}
+
+.body-2 {
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.body-3 {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 19px;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  color: #3A4374;
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 35px;
+  letter-spacing: -0.33px;
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 29px;
+  letter-spacing: -0.25px;
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.25px;
+}
+
+h4 {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+}
+
+p {
+  color: #647196;
+  margin: 0;
+}
+
+button {
+  font-family: 'Jost', sans-serif;
+  border: 0;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.row-flexbox-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row-flexbox-flex-start {
+  display: flex;
+  align-items: center;
+}
+
+.column-flexbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.relative-position-element {
+  position: relative;
+}
+
+.large-rounded-corners-element {
+  border-radius: 10px;
+}
+
+.small-rounded-corners-element {
+  border-radius: 5px;
+}
+
+/* ---------------------------------------- Suggestions, roadmap and feedback detail pages ---------------------------------------- */
+
+.feedback-button {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #F2F4FE;
+  padding: 12px min(4vw, 25px);
+}
+
+.add-feedback-button {
+  background: #AD1FEA;
+}
+
+.add-feedback-button:hover {
+  background: #C75AF6;
+}
+
+.upvote-button {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: -0.18px;
+  background: #F2F4FE;
+  color: #3A4374;
+  /* gap: 10px; */
+}
+
+.upvote-button:hover {
+  background: #CFD7FF;
+}
+
+.product-request-category {
+  background: #F2F4FF;
+  color: #4661E6;
+  width: min-content;
+  padding: 5px 15px;
+}
+
+.product-request-comments {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: -0.22px;
+  color: #3A4374;
+  gap: 10px;
+}
+
+/* ---------------------------------------- Suggestions page ---------------------------------------- */
+
+.suggestions-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px 30px;
+}
+
+/* Header */
+
+.suggestions-page-header {
+  gap: 25px;
+}
+
+/* Logo */
+
+.logo {
+  background-image: url(./images/backgrounds/background-header-desktop.png);
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  width: 255px;
+  height: 137px;
+  padding: 25px;
+
+  justify-content: flex-end;
+}
+
+.logo > h2, .logo > p {
+  color: white;
+}
+
+.logo > p {
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+/* Category selector and roadmap viewer */
+
+.category-selector, .roadmap-viewer {
+  background: white;
+  box-sizing: border-box;
+  width: clamp(225px, 30vw, 255px);
+}
+
+/* Category selector */
+
+.category-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 25px;
+}
+
+.category-selector > button {
+  padding: 5px 15px;
+}
+
+/* Roadmap viewer */
+
+.roadmap-viewer {
+  padding: 20px 25px 25px;
+}
+
+.roadmap-link-container {
+  margin-bottom: 25px;
+}
+
+.roadmap-link-container > a {
+  text-decoration: underline;
+  color: #4661E6;
+}
+
+.roadmap-link-container > a:hover {
+  color: #8397F8;
+}
+
+/* Main */
+
+.suggestions-page-main {
+  gap: 25px;
+}
+
+/* Feedback generator */
+
+.feedback-generator-suggestions {
+  background: #373F68;
+  box-sizing: border-box;
+  width: 825px;
+  padding: min(2vw, 15px) 15px min(2vw, 15px) 25px;
+}
+
+.sorting-methods-menu-label {
+  font-size: 14px;
+  line-height: 20px;
+  background: inherit;
+  gap: 10px;
+}
+
+.sorting-methods-menu-label-p {
+  color: #F2F4FE;
+}
+
+.sorting-methods-menu-label-span {
+  font-weight: 700;
+}
+
+.sorting-methods-menu-options-list {
+  background: white;
+  width: 255px;
+  box-shadow: 0px 10px 40px -7px rgb(55, 63, 104, 0.35);
+
+  position: absolute;
+  left: 0;
+  top: 60px;
+  z-index: 1;
+}
+
+.sorting-methods-menu-options-list button {
+  background: transparent;
+  color: #647196;
+  width: 100%;
+  padding: 12px 25px;
+}
+
+.sorting-methods-menu-options-list button:hover {
+  color: #AD1FEA;
+}
+
+/* Suggested product requests section */
+
+.suggested-product-requests-section {
+  gap: clamp(15px, 1.5vw, 25px);
+}
+
+/* Suggested product request */
+
+.suggested-product-request-upvotes {
+  min-width: 40px;
+  padding: 12px 10px 10px;
+
+  align-items: center;
+  gap: 10px;
+
+  position: absolute;
+  top: 30px;
+  left: min(6vw, 30px);
+}
+
+.suggested-product-request-link {
+  background: white;
+  box-sizing: border-box;
+  width: 825px;
+  padding: min(6vw, 30px);
+
+  flex-wrap: wrap;
+  gap: 15px 40px;
+}
+
+.suggested-product-request-editable-info {
+  margin-left: 80px;
+}
+
+.suggested-product-request-editable-info > p {
+  margin: 5px 0 10px;
+}
+
+/* ---------------------------------------- Roadmap page ---------------------------------------- */
+
+.roadmap-page {
+  align-items: center;
+  gap: 4vw;
+}
+
+/* Feedback generator */
+
+.feedback-generator-roadmap {
+  background: #373F68;
+  box-sizing: border-box;
+  width: min(100%, 1110px);
+  padding: 25px clamp(25px, 4vw, 40px) 25px min(6vw, 30px);
+}
+
+.back-link-roadmap {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: white;
+  margin-bottom: 5px;
+  gap: 15px;
+}
+
+/* Non-suggestion product requests columns section */
+
+.non-suggestion-product-requests-columns-section {
+  width: min(100%, 1110px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(10px, 2vw, 30px);
+}
+
+/* Non-suggestion product requests column */
+
+.non-suggestion-product-requests-column > p {
+  margin: 5px 0 max(2vw, 25px);
+}
+
+/* Non-suggestion product requests section */
+
+.non-suggestion-product-requests-section {
+  gap: max(1.5vw, 15px);
+}
+
+/* Non-suggestion product request */
+
+.non-suggestion-product-request-link {
+  background: white;
+  border-radius: 0 0 5px 5px;
+  padding: clamp(15px, 2.5vw, 25px) min(2.5vw, 30px) clamp(25px, 3vw, 30px);
+}
+
+.non-suggestion-product-request-status {
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.non-suggestion-product-request-status > span {
+  color: #647196;
+}
+
+.non-suggestion-product-request-description {
+  margin: 5px 0 15px;
+}
+
+.non-suggestion-product-request-comments {
+  height: clamp(30px, 4vw, 40px);
+  justify-content: flex-end;
+}
+
+.non-suggestion-product-request-upvotes {
+  height: clamp(30px, 4vw, 40px);
+  padding: 0 12px 0 15px;
+  gap: 10px;
+
+  position: absolute;
+  left: min(2.5vw, 30px);
+  bottom: clamp(25px, 3vw, 30px);
+}
+
+.non-suggestion-product-request-upvotes span {
+  min-width: 23px;
+}
+
+/* ---------------------------------------- Feedback detail page ---------------------------------------- */
+
+/* Clicked product request */
+
+.clicked-product-request {
+  background: white;
+  box-sizing: border-box;
+  width: min(100%, 730px);
+  padding: min(6vw, 30px);
+
+  display: grid;
+  grid-template-columns: min-content auto max-content;
+  gap: 15px 40px;
+  align-items: center;
+}
+
+.clicked-product-request-upvotes {
+  min-width: 40px;
+  padding: 12px 10px 10px;
+
+  align-items: center;
+  gap: 10px;
+}
+
+.clicked-product-request-description {
+  margin: 5px 0 10px;
+}
+
+/* Clicked product request comments section */
+
+.clicked-product-request-comments-section {
+  background: white;
+  box-sizing: border-box;
+  width: min(100%, 730px);
+  padding: 25px min(6vw, 30px) clamp(25px, 4vw, 50px);
+}
+
+/* Clicked product request replies section */
+
+.clicked-product-request-replies-section {
+  gap: clamp(15px, 2vw, 30px);
+}
+
+/* Clicked product request comment and reply */
+
+.comment-container, .reply-container {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 15px min(4vw, 30px);
+}
+
+.user-image {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.user-username {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.reply-button {
+  background: transparent;
+  color: #4661E6;
+}
+
+.reply-button:hover {
+  text-decoration: underline;
+}
+
+.content-paragraph {
+  grid-column: 2;
+}
+
+/* Clicked product request comment */
+
+.comment-container {
+  padding: min(6vw, 30px) 0;
+}
+
+.vertical-rule {
+  background: rgb(100, 113, 150, 0.1);
+  width: 1px;
+
+  position: absolute;
+  left: 20px;
+  top: calc(min(6vw, 30px) + 65px);
+}
+
+/* Clicked product request reply */
+
+.reply-container {
+  margin-left: min(6vw, 45px);
+}
+
+.replying-to {
+  font-weight: 700;
+  color: #AD1FEA;
+}
