@@ -15,7 +15,7 @@ const clickedProductRequest = props => {
 
             <div className="row-flexbox-flex-start product-request-comments">
                 <img src="/images/icons/icon-comments.png" alt="" />
-                {props.numberOfComments}
+                <span style={{opacity: props.numberOfComments === 0 && 0.5}}>{props.numberOfComments}</span>
             </div>
         </article>
     );

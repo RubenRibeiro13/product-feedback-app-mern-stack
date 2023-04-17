@@ -20,7 +20,7 @@ const FeedbackGeneratorRoadmap = () => {
                 <h1 style={{color: "white"}}>Roadmap</h1>
             </div>
 
-            <Link to="/new-feedback" className="large-rounded-corners-element feedback-button add-feedback-button">+ Add Feedback</Link>
+            <Link to="/new-feedback" className="large-rounded-corners-element colored-button colored-button-1">+ Add Feedback</Link>
         </section>
     )
 }

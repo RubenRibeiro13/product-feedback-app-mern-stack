@@ -1,8 +1,10 @@
 import {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import FeedbackEditor from "../components/FeedbackEditor";
 import ClickedProductRequest from "../components/ClickedProductRequest";
 import ClickedProductRequestCommentsSection from "../components/ClickedProductRequestCommentsSection";
+import AddCommentSection from "../components/AddCommentSection";
 
 const FeedbackDetail = () => {
     /* Get product requests */
@@ -42,7 +44,11 @@ const FeedbackDetail = () => {
     /* Render feedback detail page */
 
     return (
-        <main>
+        <main className="column-flexbox feedback-detail-page">
+            <FeedbackEditor
+                suggestionId={suggestionId}
+            />
+
             {clickedProductRequest.map(productRequest => {
                 return <ClickedProductRequest
                     key={productRequest._id}
@@ -61,6 +67,8 @@ const FeedbackDetail = () => {
                     comments={productRequest.comments.sort((a, b) => {return a.id - b.id})}
                 />
             })}
+
+            <AddCommentSection />
         </main>
     );
 }
