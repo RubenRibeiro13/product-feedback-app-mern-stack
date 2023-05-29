@@ -1,7 +1,6 @@
 body {
   font-family: 'Jost', sans-serif;
   background: #F7F8FD;
-  /* padding: 7vw 5vw; */
   margin: 0;
 }
 
@@ -72,15 +71,21 @@ a {
   text-decoration: none;
 }
 
-textarea {
-  resize: none;
-  font-family: 'Jost', sans-serif;
+input[type=text], .menu-label-feedback, textarea {
   color: #3A4374;
   background: #F7F8FD;
   box-sizing: border-box;
   width: 100%;
   padding: 15px min(4vw, 25px);
+}
+
+input[type=text], textarea {
+  font-family: 'Jost', sans-serif;
   border: 0;
+}
+
+textarea {
+  resize: none;
   display: block;
 }
 
@@ -118,6 +123,12 @@ textarea::placeholder {
   border-radius: 5px;
 }
 
+/* ---------------------------------------- All pages ---------------------------------------- */
+
+.suggestions-page, .roadmap-page, .feedback-detail-page, .new-feedback-page {
+  padding: 7vw 5vw;
+}
+
 /* ---------------------------------------- Suggestions, roadmap and feedback detail pages ---------------------------------------- */
 
 .colored-button {
@@ -144,6 +155,14 @@ textarea::placeholder {
 
 .colored-button-2:hover {
   background: #7C91F9;
+}
+
+.colored-button-3 {
+  background: #3A4374;
+}
+
+.colored-button-3:hover {
+  background: #656EA3;
 }
 
 .upvote-button {
@@ -176,6 +195,25 @@ textarea::placeholder {
   gap: 10px;
 }
 
+/* ---------------------------------------- Suggestions, new feedback and edit feedback pages ---------------------------------------- */
+
+.menu-options-list {
+  background: white;
+  box-shadow: 0px 10px 40px -7px rgb(55, 63, 104, 0.35);
+  position: absolute;
+}
+
+.menu-options-list button {
+  background: transparent;
+  color: #647196;
+  width: 100%;
+  padding: 12px 25px;
+}
+
+.menu-options-list button:hover {
+  color: #AD1FEA;
+}
+
 /* ---------------------------------------- Feedback detail, new feedback and edit feedback pages ---------------------------------------- */
 
 .back-link-feedback {
@@ -196,7 +234,6 @@ textarea::placeholder {
 /* ---------------------------------------- Suggestions page ---------------------------------------- */
 
 .suggestions-page {
-  padding: 7vw 5vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -303,25 +340,9 @@ textarea::placeholder {
 }
 
 .sorting-methods-menu-options-list {
-  background: white;
   width: 255px;
-  box-shadow: 0px 10px 40px -7px rgb(55, 63, 104, 0.35);
-
-  position: absolute;
-  left: 0;
   top: 60px;
   z-index: 1;
-}
-
-.sorting-methods-menu-options-list button {
-  background: transparent;
-  color: #647196;
-  width: 100%;
-  padding: 12px 25px;
-}
-
-.sorting-methods-menu-options-list button:hover {
-  color: #AD1FEA;
 }
 
 /* Suggested product requests section */
@@ -365,7 +386,6 @@ textarea::placeholder {
 /* ---------------------------------------- Roadmap page ---------------------------------------- */
 
 .roadmap-page {
-  padding: 7vw 5vw;
   align-items: center;
   gap: 4vw;
 }
@@ -453,7 +473,6 @@ textarea::placeholder {
 
 .feedback-detail-page {
   width: min(100%, 730px);
-  padding: 7vw 5vw;
   margin: 0 auto;
   gap: 25px;
 }
@@ -570,4 +589,50 @@ textarea::placeholder {
 .comment-draft {
   height: 80px;
   margin-top: 25px;
+}
+
+/* ---------------------------------------- New feedback and edit feedback pages ---------------------------------------- */
+
+.new-feedback-page, .edit-feedback-page {
+  display: flex;
+  justify-content: center;
+}
+
+.create-new-feedback-section, .editing-feedback-section {
+  background: white;
+  box-sizing: border-box;
+  width: min(100%, 540px);
+  padding: min(11vw, 50px) min(6vw, 40px) min(6vw, 40px);
+  margin-top: min(14vw, 70px);
+}
+
+.new-feedback-icon, .edit-feedback-icon {
+  width: min(10vw, 56px);
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.inputs-container {
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.input-label {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 2px 0 15px;
+}
+
+.menu-label-feedback:focus {
+  outline: 1px solid #4661E6;
+}
+
+.menu-options-list-feedback {
+  width: 100%;
+  top: 65px;
+}
+
+.feedback-detail-draft {
+  height: 95px;
 }

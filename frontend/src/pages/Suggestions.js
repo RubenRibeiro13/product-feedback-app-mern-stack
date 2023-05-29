@@ -113,7 +113,7 @@ const Suggestions = () => {
 
     const [sortingMethod, setSortingMethod] = useState("Most Upvotes");
     const changeSortingMethod = (event) => {
-        if (event.type === "click") {
+        if (event.type === "mousedown") {
             setSortingMethod(event.target.innerText);
         } else if (event.type === "keydown" && (event.key === "Tab" || event.key === "Enter")) {
             event.preventDefault();

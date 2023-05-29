@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import SortingMethodsMenuItem from "./SortingMethodsMenuItem";
+import MenuItem from "./MenuItem";
 import iconSuggestions from "../images/icons/icon-suggestions.png";
 import iconArrowDownWhite from "../images/icons/icon-arrow-down-white.png";
 import iconArrowUpWhite from "../images/icons/icon-arrow-up-white.png";
@@ -40,17 +40,18 @@ const FeedbackGeneratorSuggestions = props => {
 
                         <ul
                             role="menu"
-                            className="large-rounded-corners-element sorting-methods-menu-options-list"
+                            className="large-rounded-corners-element menu-options-list sorting-methods-menu-options-list"
                             style={{display: !props.isMenuOpen && "none"}}
                         >
                             {["Most Upvotes", "Least Upvotes", "Most Comments", "Least Comments"].map((string, index) => {
                                 return (
-                                    <SortingMethodsMenuItem
+                                    <MenuItem
                                         key={index}
+                                        isLastItem={string === "Least Comments"}
                                         text={string}
+                                        selectedOption={props.sortingMethod}
+                                        selectOption={props.changeSortingMethod}
                                         itemRef={props.itemRef}
-                                        sortingMethod={props.sortingMethod}
-                                        changeSortingMethod={props.changeSortingMethod}
                                     />
                                 );
                             })}
