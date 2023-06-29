@@ -27,6 +27,7 @@ const MenuFeedback = props => {
                     {props.optionsList.map((string, index) => {
                         return <MenuItem
                             key={index}
+                            isFirstItem={index === 0}
                             isLastItem={index === props.optionsList.length - 1}
                             text={string}
                             selectedOption={props.selectedOption}

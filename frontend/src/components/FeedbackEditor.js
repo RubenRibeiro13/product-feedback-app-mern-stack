@@ -1,20 +1,21 @@
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const FeedbackEditor = props => {
     const [isBackLinkHovered, setIsBackLinkHovered] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <section className="row-flexbox-space-between">
-            <Link
-                to="/suggestions"
+            <button
+                onClick={() => navigate(-1)}
                 className="row-flexbox-flex-start back-link-feedback"
                 onMouseOver={() => {setIsBackLinkHovered(true)}}
                 onMouseOut={() => {setIsBackLinkHovered(false)}}
             >
                 <img src="/images/icons/icon-arrow-left.png" alt="" />
                 <span style={{textDecoration: isBackLinkHovered && "underline"}}>Go Back</span>
-            </Link>
+            </button>
 
             <Link
                 to={"/edit-feedback/" + props.suggestionId}

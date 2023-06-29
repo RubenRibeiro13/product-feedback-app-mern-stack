@@ -1,9 +1,9 @@
 const selectOption = (event, selectedOption, setSelectedOption, setIsMenuOpen, optionsList, setFocusedElement, menuOf) => {
+    event.preventDefault();
+
     if (event.type === "mousedown") {
         setSelectedOption(event.target.innerText);
     } else if (event.type === "keydown") {
-        event.preventDefault();
-
         if (event.key === "Enter" || event.key === "Tab") {
             setIsMenuOpen(false);
             setFocusedElement(menuOf + "MenuLabel");

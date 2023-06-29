@@ -5,9 +5,11 @@ import selectOption from "../functions/selectOption";
 import MenuFeedback from "../components/MenuFeedback";
 
 const NewFeedback = () => {
-    /* Initialize "navigate" */
+    /* Initialize variables */
 
     const navigate = useNavigate();
+    const [isTitleFocused, setIsTitleFocused] = useState(false);
+    const [isTitleValid, setIsTitleValid] = useState(true);
 
     /* Focus on certain elements conditionally */
 
@@ -47,10 +49,14 @@ const NewFeedback = () => {
     return (
         <main className="new-feedback-page" onMouseDown={changeIsCategoriesMenuOpen}>
             <div>
-                <Link to="/suggestions" className="row-flexbox-flex-start back-link-feedback" style={{width: "max-content"}}>
+                <button
+                    onClick={() => navigate(-1)}
+                    className="row-flexbox-flex-start back-link-feedback"
+                    style={{width: "max-content"}}
+                >
                     <img src="images/icons/icon-arrow-left.png" alt="" />
                     Go Back
-                </Link>
+                </button>
 
                 <section className="relative-position-element large-rounded-corners-element create-new-feedback-section">
                     <img src="images/icons/icon-new-feedback.png" alt="" className="new-feedback-icon" />
