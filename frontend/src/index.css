@@ -125,7 +125,7 @@ textarea::placeholder {
 
 /* ---------------------------------------- All pages ---------------------------------------- */
 
-.suggestions-page, .roadmap-page, .feedback-detail-page, .new-feedback-page {
+.suggestions-page, .roadmap-page, .feedback-detail-page, .new-feedback-page, .edit-feedback-page {
   padding: 7vw 5vw;
 }
 
@@ -165,6 +165,14 @@ textarea::placeholder {
   background: #656EA3;
 }
 
+.colored-button-4 {
+  background: #D73737;
+}
+
+.colored-button-4:hover {
+  background: #E98888;
+}
+
 .upvote-button {
   font-weight: 700;
   font-size: 13px;
@@ -201,6 +209,7 @@ textarea::placeholder {
   background: white;
   box-shadow: 0px 10px 40px -7px rgb(55, 63, 104, 0.35);
   position: absolute;
+  z-index: 1;
 }
 
 .menu-options-list button {
@@ -602,7 +611,6 @@ textarea::placeholder {
 .create-new-feedback-section, .editing-feedback-section {
   background: white;
   box-sizing: border-box;
-  width: min(100%, 540px);
   padding: min(11vw, 50px) min(6vw, 40px) min(6vw, 40px);
   margin-top: min(14vw, 70px);
 }

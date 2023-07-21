@@ -22,7 +22,7 @@ const FeedbackGeneratorSuggestions = props => {
                             className="sorting-methods-menu-label row-flexbox-flex-start"
                             onMouseOver={() => {setIsLabelHovered(true)}}
                             onMouseOut={() => {setIsLabelHovered(false)}}
-                            onClick={props.changeIsMenuOpen}
+                            onKeyDown={props.changeIsMenuOpen}
                             ref={props.labelRef}
                         >
                             <p
@@ -47,6 +47,7 @@ const FeedbackGeneratorSuggestions = props => {
                                 return (
                                     <MenuItem
                                         key={index}
+                                        isFirstItem={index === 0}
                                         isLastItem={string === "Least Comments"}
                                         text={string}
                                         selectedOption={props.sortingMethod}

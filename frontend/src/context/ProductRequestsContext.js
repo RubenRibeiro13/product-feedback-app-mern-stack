@@ -59,5 +59,8 @@ const productRequestsReducer = (productRequests, action) => {
         case "read": {
             return action.payload;
         }
+        case "create": {
+            return [action.payload, ...productRequests]
+        }
     }
 }

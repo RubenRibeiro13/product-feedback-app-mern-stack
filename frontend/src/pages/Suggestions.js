@@ -99,9 +99,11 @@ const Suggestions = () => {
         });
 
         if (menuFlag) {
-            setIsMenuOpen(isMenuOpen ? false : true);
+            if (event.type === "mousedown" || (event.type === "keydown" && event.key === "Enter")) {
+                setIsMenuOpen(!isMenuOpen);
+            }
 
-            if (!isMenuOpen) {
+            if (!isMenuOpen && event.type === "keydown" && event.key === "Enter") {
                 setFocusedElement("item");
             }
         } else {
@@ -177,7 +179,7 @@ const Suggestions = () => {
     /* Render suggestions page */
 
     return (
-        <div className="suggestions-page" onClick={changeIsMenuOpen}>
+        <div className="suggestions-page" onMouseDown={changeIsMenuOpen}>
             <header className="suggestions-page-header column-flexbox">
                 <Logo />
 
@@ -211,7 +213,11 @@ const Suggestions = () => {
                             key={productRequest._id}
                             id={productRequest._id}
                             title={productRequest.title}
-                            category={productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)}
+                            category={
+                                !["ui", "ux"].includes(productRequest.category) ?
+                                    productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)
+                                : productRequest.category.toUpperCase()
+                            }
                             upvotes={productRequest.upvotes}
                             description={productRequest.description}
                             numberOfComments={productRequest.numberOfComments}

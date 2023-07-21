@@ -5,6 +5,7 @@ const MenuFeedback = props => {
         <ul role="menubar">
             <li role="menuitem" className="relative-position-element">
                 <button
+                    type="button"
                     className={
                         "body-2 row-flexbox-space-between small-rounded-corners-element menu-label-feedback " + props.menuOf + "-menu-label"
                     }
@@ -14,7 +15,7 @@ const MenuFeedback = props => {
                     {props.selectedOption}
                     <img
                         className={"menu-arrow-feedback " + props.menuOf + "-menu-arrow"}
-                        src={props.isMenuOpen ? "images/icons/icon-arrow-up.png" : "images/icons/icon-arrow-down.png"}
+                        src={props.isMenuOpen ? "/images/icons/icon-arrow-up.png" : "/images/icons/icon-arrow-down.png"}
                         alt=""
                     />
                 </button>

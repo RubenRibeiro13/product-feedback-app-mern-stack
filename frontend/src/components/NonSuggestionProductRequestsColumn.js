@@ -14,7 +14,11 @@ const NonSuggestionProductRequestsColumn = props => {
                         status={productRequest.status}
                         title={productRequest.title}
                         description={productRequest.description}
-                        category={productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)}
+                        category={
+                            !["ui", "ux"].includes(productRequest.category) ?
+                                productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)
+                            : productRequest.category.toUpperCase()
+                        }
                         numberOfComments={productRequest.numberOfComments}
                         upvotes={productRequest.upvotes}
                     />

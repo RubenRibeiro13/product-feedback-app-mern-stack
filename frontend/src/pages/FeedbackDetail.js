@@ -53,7 +53,11 @@ const FeedbackDetail = () => {
                 return <ClickedProductRequest
                     key={productRequest._id}
                     title={productRequest.title}
-                    category={productRequest.category.slice(0,1).toUpperCase() + productRequest.category.slice(1)}
+                    category={
+                        !["ui", "ux"].includes(productRequest.category) ?
+                            productRequest.category.slice(0,1).toUpperCase() + productRequest.category.slice(1)
+                        : productRequest.category.toUpperCase()
+                    }
                     upvotes={productRequest.upvotes}
                     description={productRequest.description}
                     numberOfComments={productRequest.numberOfComments}

@@ -11,6 +11,16 @@ router.get("/roadmap", async (req, res) => {
     res.json(productRequests);
 });
 
+router.get("/new-feedback", async (req, res) => {
+    const productRequests = await ProductRequest.find({});
+    res.json(productRequests);
+});
+
+router.post("/new-feedback", async (req, res) => {
+    const productRequest = await ProductRequest.create(req.body);
+    res.json(productRequest);
+});
+
 /* router.get("/new-feedback", (req, res) => {
 
 }); */

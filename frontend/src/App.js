@@ -17,6 +17,7 @@ function App() {
           <Route path="roadmap" element={<Roadmap />} />
           <Route path="feedback-detail/:suggestionId" element={<FeedbackDetail />} />
           <Route path="new-feedback" element={<NewFeedback />} />
+          <Route path="edit-feedback/:suggestionId" element={<EditFeedback />} />
         </Route>
       </Routes>
     </BrowserRouter>

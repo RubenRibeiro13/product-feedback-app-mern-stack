@@ -11,6 +11,7 @@ const app = express();
 const cors = require("cors");
 const homeRoutes = require("./routes/home");
 const feedbackDetailRoutes = require("./routes/feedbackDetail");
+const editFeedbackRoutes = require("./routes/editFeedback");
 
 mongoose.set("strictQuery", false);
 mongoose.connect('mongodb://127.0.0.1:27017/productfeedbackDB');
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/", homeRoutes);
 app.use("/feedback-detail", feedbackDetailRoutes);
+app.use("/edit-feedback", editFeedbackRoutes);
 
 const checkDatabase = async () => {
     const testDatabase = await Database.find({});
