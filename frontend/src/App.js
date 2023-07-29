@@ -5,7 +5,6 @@ import Roadmap from "./pages/Roadmap";
 import FeedbackDetail from "./pages/FeedbackDetail";
 import NewFeedback from "./pages/NewFeedback";
 import EditFeedback from "./pages/EditFeedback";
-import Footer from "./components/Footer";
 
 function App() {
   return (

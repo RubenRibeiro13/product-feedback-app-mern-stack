@@ -179,8 +179,8 @@ const Suggestions = () => {
     /* Render suggestions page */
 
     return (
-        <div className="suggestions-page" onMouseDown={changeIsMenuOpen}>
-            <header className="suggestions-page-header column-flexbox">
+        <main className="suggestions-page" onMouseDown={changeIsMenuOpen}>
+            <div className="suggestions-page-header column-flexbox">
                 <Logo />
 
                 <CategorySelector
@@ -193,9 +193,9 @@ const Suggestions = () => {
                     numberOfInProgress={inProgressProductRequests.length}
                     numberOfLive={liveProductRequests.length}
                 />
-            </header>
+            </div>
 
-            <main className="column-flexbox suggestions-page-main">
+            <div className="column-flexbox suggestions-page-main">
                 <FeedbackGeneratorSuggestions
                     numberOfSuggestions={suggestedProductRequests.length}
                     focusedElement={focusedElement}
@@ -224,8 +224,8 @@ const Suggestions = () => {
                         />
                     })}
                 </section>
-            </main>
-        </div>
+            </div>
+        </main>
     );
 }
 
