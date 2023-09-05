@@ -5,6 +5,8 @@ import Roadmap from "./pages/Roadmap";
 import FeedbackDetail from "./pages/FeedbackDetail";
 import NewFeedback from "./pages/NewFeedback";
 import EditFeedback from "./pages/EditFeedback";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="feedback-detail/:suggestionId" element={<FeedbackDetail />} />
           <Route path="new-feedback" element={<NewFeedback />} />
           <Route path="edit-feedback/:suggestionId" element={<EditFeedback />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>

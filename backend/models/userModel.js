@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const validator = require("validator");
+/* const validator = require("validator");
+const fs = require("fs"); */
 
 const userSchema = new mongoose.Schema({
     image: String,
@@ -10,8 +11,7 @@ const userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     password: {
         type: String,
@@ -20,13 +20,13 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.signup = async function(image, name, username, password) {
-    if (
+    /* if (
         !/^[A-Z][a-z]+ [A-Z][a-z]+$/.test(name) ||
         !/^[a-z]+([_.][a-z]+)*([0-9]*|[.][0-9]+)$/.test(username) ||
         !validator.isStrongPassword(password)
     ) {
         throw Error("Name, username and password fields must be properly filled");
-    }
+    } */
 
 
     const userExists = await this.findOne({username: username});
@@ -42,6 +42,14 @@ userSchema.statics.signup = async function(image, name, username, password) {
         username: username,
         password: hash
     });
+
+    /* fs.readFile(image, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        
+        console.log(Buffer.from(data, "binary").toString("base64"));
+    }); */
 
     return user;
 }

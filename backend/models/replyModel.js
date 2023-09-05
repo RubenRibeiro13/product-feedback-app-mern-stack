@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const {userSchema} = require("./userModel");
 
 const replySchema = new mongoose.Schema({
+    id: Number,
     content: {
         type: String,
         required: true

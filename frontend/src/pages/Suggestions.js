@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef} from "react";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import Header from "../components/Header";
 import Logo from "../components/Logo";
 import CategorySelector from "../components/CategorySelector";
 import RoadmapViewer from "../components/RoadmapViewer";
@@ -179,53 +180,57 @@ const Suggestions = () => {
     /* Render suggestions page */
 
     return (
-        <main className="suggestions-page" onMouseDown={changeIsMenuOpen}>
-            <div className="suggestions-page-header column-flexbox">
-                <Logo />
+        <div>
+            <Header />
 
-                <CategorySelector
-                    category={category}
-                    changeCategory={changeCategory}
-                />
+            <main className="suggestions-page" onMouseDown={changeIsMenuOpen}>
+                <div className="suggestions-page-left-column column-flexbox">
+                    <Logo />
 
-                <RoadmapViewer
-                    numberOfPlanned={plannedProductRequests.length}
-                    numberOfInProgress={inProgressProductRequests.length}
-                    numberOfLive={liveProductRequests.length}
-                />
-            </div>
+                    <CategorySelector
+                        category={category}
+                        changeCategory={changeCategory}
+                    />
 
-            <div className="column-flexbox suggestions-page-main">
-                <FeedbackGeneratorSuggestions
-                    numberOfSuggestions={suggestedProductRequests.length}
-                    focusedElement={focusedElement}
-                    labelRef={labelRef}
-                    itemRef={itemRef}
-                    isMenuOpen={isMenuOpen}
-                    changeIsMenuOpen={changeIsMenuOpen}
-                    sortingMethod={sortingMethod}
-                    changeSortingMethod={changeSortingMethod}
-                />
+                    <RoadmapViewer
+                        numberOfPlanned={plannedProductRequests.length}
+                        numberOfInProgress={inProgressProductRequests.length}
+                        numberOfLive={liveProductRequests.length}
+                    />
+                </div>
 
-                <section className="suggested-product-requests-section column-flexbox">
-                    {suggestedProductRequests.map(productRequest => {
-                        return <SuggestedProductRequest
-                            key={productRequest._id}
-                            id={productRequest._id}
-                            title={productRequest.title}
-                            category={
-                                !["ui", "ux"].includes(productRequest.category) ?
-                                    productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)
-                                : productRequest.category.toUpperCase()
-                            }
-                            upvotes={productRequest.upvotes}
-                            description={productRequest.description}
-                            numberOfComments={productRequest.numberOfComments}
-                        />
-                    })}
-                </section>
-            </div>
-        </main>
+                <div className="column-flexbox suggestions-page-right-column">
+                    <FeedbackGeneratorSuggestions
+                        numberOfSuggestions={suggestedProductRequests.length}
+                        focusedElement={focusedElement}
+                        labelRef={labelRef}
+                        itemRef={itemRef}
+                        isMenuOpen={isMenuOpen}
+                        changeIsMenuOpen={changeIsMenuOpen}
+                        sortingMethod={sortingMethod}
+                        changeSortingMethod={changeSortingMethod}
+                    />
+
+                    <section className="suggested-product-requests-section column-flexbox">
+                        {suggestedProductRequests.map(productRequest => {
+                            return <SuggestedProductRequest
+                                key={productRequest._id}
+                                id={productRequest._id}
+                                title={productRequest.title}
+                                category={
+                                    !["ui", "ux"].includes(productRequest.category) ?
+                                        productRequest.category.slice(0, 1).toUpperCase() + productRequest.category.slice(1)
+                                    : productRequest.category.toUpperCase()
+                                }
+                                upvotes={productRequest.upvotes}
+                                description={productRequest.description}
+                                numberOfComments={productRequest.numberOfComments}
+                            />
+                        })}
+                    </section>
+                </div>
+            </main>
+        </div>
     );
 }
 

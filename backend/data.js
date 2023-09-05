@@ -1,4 +1,6 @@
-module.exports = {
+const generator = require("generate-password");
+
+let data = {
   "currentUser": {
     "image": "./assets/user-images/image-zena.jpg",
     "name": "Zena Kelley",
@@ -304,3 +306,32 @@ module.exports = {
     }
   ]
 }
+
+const passwords = Array(12).fill(0).map(zero => generator.generate({numbers: true, symbols: true}));
+let usernames = [];
+
+data.productRequests.forEach(productRequest => {
+  if (productRequest.comments !== undefined) {
+    productRequest.comments.forEach(comment => {
+      if (!usernames.includes(comment.user.username)) {
+        usernames.push(comment.user.username);
+      }
+  
+      const userIndexComment = usernames.findIndex(username => {return username === comment.user.username});
+      comment.user.password = passwords[userIndexComment];
+  
+      if (comment.replies !== undefined) {
+        comment.replies.forEach(reply => {
+          if (!usernames.includes(reply.user.username)) {
+            usernames.push(reply.user.username);
+          }
+    
+          const userIndexReply = usernames.findIndex(username => {return username === reply.user.username});
+          reply.user.password = passwords[userIndexReply];
+        });
+      }
+    });
+  }
+});
+
+module.exports = data;
