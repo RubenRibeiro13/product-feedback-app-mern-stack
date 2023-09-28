@@ -657,8 +657,6 @@ header {
 
 input[type=file] {
   color: transparent;
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0;
   cursor: pointer;
@@ -668,19 +666,67 @@ input[type=file] {
   display: none;
 }
 
-.drag-n-drop-container {
+.drag-n-drop-zone {
   text-align: center;
+  box-sizing: border-box;
+  width: 200px;
+  height: 200px;
   padding: 15px min(4vw, 25px);
   border: medium dashed #647196;
+  justify-content: space-evenly;
 }
 
-.profile-picture-container {
+/* .profile-picture-container {
   width: 95px;
   height: 95px;
   border-radius: 50%;
   overflow: hidden;
+} */
+
+/* .profile-picture {
+  width: 100%;
+} */
+
+.cropping-square, .cropping-circle, .resizer {
+  outline: medium solid #D73737;
+  position: absolute;
 }
 
-.profile-picture {
-  width: 100%;
+.cropping-square {
+  cursor: move;
+}
+
+.cropping-circle {
+  border-radius: 50%;
+  width: inherit;
+  height: inherit;
+}
+
+.resizer {
+  width: 5px;
+  height: 5px;
+}
+
+.top-left-resizer {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.top-right-resizer {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-left-resizer {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-right-resizer {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
 }
