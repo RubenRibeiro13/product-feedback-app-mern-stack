@@ -1,6 +1,7 @@
-import {useState, useEffect, useRef} from "react";
+import {useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuthContext} from "../context/AuthContext";
+import ImageInput from "../components/ImageInput";
 
 const Signup = () => {
     /* Initialize variables */
@@ -12,11 +13,10 @@ const Signup = () => {
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
     const [imageDimensions, setImageDimensions] = useState([0, 0]);
-
-    const croppingRef = useRef();
+    const [imagePosition, setImagePosition] = useState([0, 0]);
     const [croppingSide, setCroppingSide] = useState(0);
     const [croppingPosition, setCroppingPosition] = useState([0, 0, 0, 0]);
-    /* const [isResizerPressed, setIsResizerPressed] = useState(Array(4).fill(false)); */
+    const [isImageCropped, setIsImageCropped] = useState(false);
 
     const [name, setName] = useState("");
     const [isNameFocused, setIsNameFocused] = useState(false);
@@ -32,69 +32,11 @@ const Signup = () => {
 
     /* Adjust cropping side and position */
 
-    /* useEffect(() => {
-        if (isResizerPressed + "" !== Array(4).fill(false) + "") {
-            const handleResizerDrag = event => {
-                event.preventDefault();
-
-                if (isResizerPressed + "" === [true, false, false, false] + "") {
-                    const displacementX = event.pageX - croppingRef.current.getBoundingClientRect().left;
-                    const displacementY = event.pageY - croppingRef.current.getBoundingClientRect().top;
-                    
-                    if (Math.abs(displacementX) > Math.abs(displacementY)) {
-                        setCroppingSide(croppingSide - displacementX);
-                        setCroppingPosition([croppingPosition[0] + displacementX, croppingPosition[1] + displacementX]);
-                    } else {
-                        setCroppingSide(croppingSide - displacementY);
-                        setCroppingPosition([croppingPosition[0] + displacementY, croppingPosition[1] + displacementY]);
-                    }
-
-                    console.log(croppingSide);
-                }
-            }
-    
-            window.addEventListener("mousemove", handleResizerDrag);
-            window.addEventListener("mouseup", () => {setIsResizerPressed(Array(4).fill(false))});
-    
-            return () => {
-                window.removeEventListener("mousemove", handleResizerDrag);
-                window.removeEventListener("mouseup", () => {setIsResizerPressed(Array(4).fill(false))});
-            }
-        }
-    }); */
-
-    /* const handleResizerDrag = event => {
-        if (isResizerPressed + "" !== Array(4).fill(false) + "") {
-            event.preventDefault();
-
-            if (isResizerPressed + "" === [true, false, false, false] + "") {
-                const displacementX = event.pageX - croppingRef.current.getBoundingClientRect().left;
-                const displacementY = event.pageY - croppingRef.current.getBoundingClientRect().top;
-                
-                if (Math.abs(displacementX) > Math.abs(displacementY)) {
-                    setCroppingSide(croppingSide - displacementX);
-                    setCroppingPosition([croppingPosition[0] + displacementX, croppingPosition[1] + displacementX]);
-                } else {
-                    setCroppingSide(croppingSide - displacementY);
-                    setCroppingPosition([croppingPosition[0] + displacementY, croppingPosition[1] + displacementY]);
-                }
-            }
-        }
-    }
-
-    window.addEventListener("mousemove", handleResizerDrag);
-    window.addEventListener("mouseup", () => {setIsResizerPressed(Array(4).fill(false))}); */
-
     const handleCroppingClick = clickEvent => {
         clickEvent.preventDefault();
 
         let currentMousePosition = [clickEvent.pageX, clickEvent.pageY];
-        let currentCroppingPosition = [
-            parseFloat(croppingRef.current.style.left),
-            parseFloat(croppingRef.current.style.top),
-            parseFloat(croppingRef.current.style.right),
-            parseFloat(croppingRef.current.style.bottom)
-        ];
+        let currentCroppingPosition = croppingPosition;
 
         const handleCroppingDrag = dragEvent => {
             const displacementX = dragEvent.pageX - currentMousePosition[0];
@@ -102,8 +44,8 @@ const Signup = () => {
             currentMousePosition = [dragEvent.pageX, dragEvent.pageY];
 
             if (
-                currentCroppingPosition[0] + displacementX > 0 && currentCroppingPosition[2] - displacementX > 0 &&
-                currentCroppingPosition[1] + displacementY > 0 && currentCroppingPosition[3] - displacementY > 0
+                currentCroppingPosition[0] + displacementX >= 0 && currentCroppingPosition[2] - displacementX >= 0 &&
+                currentCroppingPosition[1] + displacementY >= 0 && currentCroppingPosition[3] - displacementY >= 0
             ) {
                 currentCroppingPosition = [
                     currentCroppingPosition[0] + displacementX,
@@ -114,6 +56,7 @@ const Signup = () => {
             }
 
             setCroppingPosition(currentCroppingPosition);
+            setImagePosition([-currentCroppingPosition[0], -currentCroppingPosition[1]]);
         }
 
         window.addEventListener("mousemove", handleCroppingDrag);
@@ -124,13 +67,8 @@ const Signup = () => {
         clickEvent.preventDefault();
 
         let currentMousePosition = [clickEvent.pageX, clickEvent.pageY];
-        let currentCroppingSide = parseFloat(croppingRef.current.style.width);
-        let currentCroppingPosition = [
-            parseFloat(croppingRef.current.style.left),
-            parseFloat(croppingRef.current.style.top),
-            parseFloat(croppingRef.current.style.right),
-            parseFloat(croppingRef.current.style.bottom)
-        ];
+        let currentCroppingSide = croppingSide;
+        let currentCroppingPosition = croppingPosition;
 
         const handleResizerDrag = dragEvent => {
             const displacementX = dragEvent.pageX - currentMousePosition[0];
@@ -245,10 +183,44 @@ const Signup = () => {
 
             setCroppingSide(currentCroppingSide);
             setCroppingPosition(currentCroppingPosition);
+            setImagePosition([-currentCroppingPosition[0], -currentCroppingPosition[1]]);
         }
 
         window.addEventListener("mousemove", handleResizerDrag);
         window.addEventListener("mouseup", () => window.removeEventListener("mousemove", handleResizerDrag));
+    }
+
+    /* Crop image */
+
+    const cropImage = () => {
+        setImageDimensions(imageDimensions.map(dimension => {return dimension * 200 / croppingSide}));
+        setImagePosition(imagePosition.map(position => {return position * 200 / croppingSide}));
+        setCroppingSide(200);
+        setCroppingPosition([0, 0, 0, 0]);
+        setIsImageCropped(true);
+    }
+
+    /* Change cropping */
+
+    const changeCropping = () => {
+        const naturalWidth = imageRef.current.naturalWidth;
+        const naturalHeight = imageRef.current.naturalHeight;
+        const currentWidth = naturalWidth / naturalHeight < 460 / 200 ? naturalWidth / naturalHeight * 200 : 460;
+        const currentHeight = naturalHeight / naturalWidth < 200 / 460 ? naturalHeight / naturalWidth * 460 : 200;
+
+        setImageDimensions([currentWidth, currentHeight]);
+        setCroppingSide(Math.min(currentWidth, currentHeight));
+        setCroppingPosition([
+            currentWidth / 2 - Math.min(currentWidth, currentHeight) / 2,
+            currentHeight / 2 - Math.min(currentWidth, currentHeight) / 2,
+            currentWidth / 2 - Math.min(currentWidth, currentHeight) / 2,
+            currentHeight / 2 - Math.min(currentWidth, currentHeight) / 2
+        ]);
+        setImagePosition([
+            -(currentWidth / 2 - Math.min(currentWidth, currentHeight) / 2),
+            -(currentHeight / 2 - Math.min(currentWidth, currentHeight) / 2)
+        ]);
+        setIsImageCropped(false);
     }
 
     /* Submit form */
@@ -256,8 +228,55 @@ const Signup = () => {
     const handleSubmit = async event => {
         event.preventDefault();
 
-        if (isNameValid && isUsernameValid && isPasswordValid) {
-            const user = {image: imageFile, name, username, password};
+        if ((image === "" || image !== "" && isImageCropped) && isNameValid && isUsernameValid && isPasswordValid) {
+            /* const imageBlob = await fetch(imageFile).then(res => res.blob()); */
+            const randomR = Math.round(Math.random() * 255);
+            const randomG = Math.round(Math.random() * 255);
+            const randomB = Math.round(Math.random() * 255);
+
+            /* const userData = new FormData();
+            userData.append("image", image !== "" ? imageBlob : "");
+            userData.append("imageColor", "rgb(" + [randomR, randomG, randomB] + ")");
+            userData.append("imageWidth", image !== "" ? imageDimensions[0] / croppingSide : 1);
+            userData.append("imageLeft", image !== "" ? imagePosition[0] / croppingSide : 0);
+            userData.append("imageTop", image !== "" ? imagePosition[1] / croppingSide : 0);
+            userData.append("name", name);
+            userData.append("username", username);
+            userData.append("password", password); */
+
+            /* let user = {}; */
+            /* for (const value of userData.values()) {
+                console.log(value.toString());
+            } */
+            /* console.log(JSON.stringify(Object.fromEntries(userData))); */
+
+            /* const user = '{' +
+                '"image": ' + (image !== "" ? imageBlob : '""') + ', ' +
+                '"imageColor": "rgb(' + [randomR, randomG, randomB] + ')", ' +
+                '"imageWidth": ' + (image !== "" ? imageDimensions[0] / croppingSide : 1) + ', ' +
+                '"imageLeft": ' + (image !== "" ? imagePosition[0] / croppingSide : 0) + ', ' +
+                '"imageTop": ' + (image !== "" ? imagePosition[1] / croppingSide : 0) + ', ' +
+                '"name": "' + name + '", ' +
+                '"username": "' + username + '", ' +
+                '"password": "' + password + '"' +
+            '}'; */
+
+            const user = {
+                image: imageFile,
+                imageColor: "rgb(" + [randomR, randomG, randomB] + ")",
+                imageWidth: image !== "" ? imageDimensions[0] / croppingSide : 1,
+                imageLeft: image !== "" ? imagePosition[0] / croppingSide : 0,
+                imageTop: image !== "" ? imagePosition[1] / croppingSide : 0,
+                name,
+                username,
+                password
+            };
+
+            /* console.log(userData.entries()); */
+
+            /* const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:4000/user/signup');
+            xhr.send(userData); */
 
             const response = await fetch("http://localhost:4000/user/signup", {
                 method: "POST",
@@ -265,6 +284,7 @@ const Signup = () => {
                 headers: {"Content-Type": "application/json"}
             });
             const json = await response.json();
+            /* console.log(await response.json()); */
 
             localStorage.setItem("user", JSON.stringify(json));
             dispatch({type: "login", payload: json});
@@ -296,116 +316,23 @@ const Signup = () => {
                         <div>
                             <h4>Image (optional)</h4>
                             <p className="input-label">Choose a profile picture</p>
-                            <div
-                                className="row-flexbox-flex-start relative-position-element"
-                                style={{justifyContent: "center"}}
-                            >
-                                <input
-                                    type="file"
-                                    accept="image/png, image/jpeg"
-                                    value={image}
-                                    title=""
-                                    style={{
-                                        width: imageFile === "" ? "200px" : 0,
-                                        height: imageFile === "" ? "200px" : 0
-                                    }}
-                                    onChange={event => {
-                                        setImage(event.target.value);
-
-                                        if (event.target.value === "") {
-                                            setImageFile("");
-                                        } else {
-                                            const fileReader = new FileReader();
-                                            fileReader.readAsDataURL(event.target.files[0]);
-                                            fileReader.onload = () => {setImageFile(fileReader.result)};
-                                        }
-                                    }}
-                                />
-
-                                {imageFile === "" && <div className="column-flexbox drag-n-drop-zone">
-                                    <p className="body-1">Drag&Drop image here</p>
-                                    <p className="body-2">or</p>
-                                    <p className="body-1">Click to browse images</p>
-                                </div>}
-
-                                {imageFile !== "" && <div className="relative-position-element profile-picture-container">
-                                    {/* <img
-                                        src={imageFile}
-                                        alt=""
-                                        style={{display: "none"}}
-                                        onLoad={event => {
-                                            const prevWidth = event.target.style.width;
-                                            const prevHeight = event.target.style.height;
-                                            const currentWidth = prevWidth / prevHeight < 460 / 200 ? prevWidth / prevHeight * 200 : 460;
-                                            const currentHeight = prevHeight / prevWidth < 200 / 460 ? prevHeight / prevWidth * 460 : 200;
-
-                                            console.log(event.target.naturalWidth);
-
-                                            setImageDimensions([currentWidth, currentHeight]);
-                                            setCroppingDimensions([
-                                                currentWidth < currentHeight ? currentWidth : currentHeight,
-                                                currentWidth < currentHeight ? currentWidth : currentHeight
-                                            ]);
-                                            setCroppingPosition(["50%", "50%"]);
-                                        }}
-                                    /> */}
-                                    <img
-                                        src={imageFile}
-                                        alt=""
-                                        style={{
-                                            width: imageDimensions[0],
-                                            height: imageDimensions[1],
-                                            display: "block"
-                                        }}
-                                        onLoad={event => {
-                                            const prevWidth = event.target.naturalWidth;
-                                            const prevHeight = event.target.naturalHeight;
-                                            const currentWidth = prevWidth / prevHeight < 460 / 200 ? prevWidth / prevHeight * 200 : 460;
-                                            const currentHeight = prevHeight / prevWidth < 200 / 460 ? prevHeight / prevWidth * 460 : 200;
-
-                                            setImageDimensions([currentWidth, currentHeight]);
-                                            setCroppingSide(Math.min(currentWidth, currentHeight));
-                                            setCroppingPosition([
-                                                currentWidth / 2 - Math.min(currentWidth, currentHeight) / 2,
-                                                currentHeight / 2 - Math.min(currentWidth, currentHeight) / 2,
-                                                currentWidth / 2 - Math.min(currentWidth, currentHeight) / 2,
-                                                currentHeight / 2 - Math.min(currentWidth, currentHeight) / 2
-                                            ]);
-                                        }}
-                                        ref={imageRef}
-                                    />
-
-                                    <div
-                                        className="cropping-square"
-                                        style={{
-                                            width: croppingSide,
-                                            height: croppingSide,
-                                            left: croppingPosition[0],
-                                            top: croppingPosition[1],
-                                            right: croppingPosition[2],
-                                            bottom: croppingPosition[3]
-                                        }}
-                                        onMouseDown={event => {
-                                            if (
-                                                event.target.classList.value.includes("cropping-square") ||
-                                                event.target.classList.value.includes("cropping-circle")
-                                            ) {
-                                                handleCroppingClick(event);
-                                            } else {
-                                                handleResizerClick(event);
-                                            }
-                                        }}
-                                        ref={croppingRef}
-                                    >
-                                        <div className="cropping-circle" />
-
-                                        <div className="resizer top-left-resizer" />
-                                        <div className="resizer top-right-resizer" />
-                                        <div className="resizer bottom-left-resizer" />
-                                        <div className="resizer bottom-right-resizer" />
-                                    </div>
-                                </div>}
-                            </div>
+                            <ImageInput
+                                imageRef={imageRef}
+                                image={image}
+                                setImage={setImage}
+                                imageFile={imageFile}
+                                setImageFile={setImageFile}
+                                imageDimensions={imageDimensions}
+                                imagePosition={imagePosition}
+                                croppingSide={croppingSide}
+                                croppingPosition={croppingPosition}
+                                isImageCropped={isImageCropped}
+                                setIsImageCropped={setIsImageCropped}
+                                handleCroppingClick={handleCroppingClick}
+                                handleResizerClick={handleResizerClick}
+                                cropImage={cropImage}
+                                changeCropping={changeCropping}
+                            />
                         </div>
 
                         <div>

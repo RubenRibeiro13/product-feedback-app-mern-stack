@@ -676,23 +676,12 @@ input[type=file] {
   justify-content: space-evenly;
 }
 
-/* .profile-picture-container {
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
-  overflow: hidden;
-} */
-
-/* .profile-picture {
-  width: 100%;
-} */
-
-.cropping-square, .cropping-circle, .resizer {
+/* .cropping-square, .cropping-circle, .resizer {
   outline: medium solid #D73737;
-  position: absolute;
-}
+} */
 
 .cropping-square {
+  position: absolute;
   cursor: move;
 }
 
@@ -705,6 +694,7 @@ input[type=file] {
 .resizer {
   width: 5px;
   height: 5px;
+  position: absolute;
 }
 
 .top-left-resizer {

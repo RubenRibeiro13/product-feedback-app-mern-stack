@@ -5,6 +5,10 @@ const fs = require("fs"); */
 
 const userSchema = new mongoose.Schema({
     image: String,
+    imageColor: String,
+    imageWidth: Number,
+    imageLeft: Number,
+    imageTop: Number,
     name: {
         type: String,
         required: true
@@ -33,6 +37,8 @@ userSchema.statics.signup = async function(image, name, username, password) {
     if (userExists) {
         throw Error("This username already exists");
     }
+
+    console.log(username);
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
