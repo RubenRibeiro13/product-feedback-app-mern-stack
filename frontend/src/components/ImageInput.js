@@ -32,15 +32,18 @@ const ImageInput = props => {
             <input
                 type="file"
                 accept="image/png, image/jpeg"
-                value={props.image}
+                value={props.imageTitle}
                 title=""
                 style={{
-                    width: props.image === "" ? "200px" : 0,
-                    height: props.image === "" ? "200px" : 0
+                    width: props.imageTitle === "" ? "200px" : 0,
+                    height: props.imageTitle === "" ? "200px" : 0
                 }}
                 onChange={event => {
-                    props.setImage(event.target.value);
-                    props.setImageFile(URL.createObjectURL(event.target.files[0]));
+                    props.setImageTitle(event.target.value);
+                    // props.setImageFile(URL.createObjectURL(event.target.files[0]));
+                    const fileReader = new FileReader();
+                    fileReader.readAsDataURL(event.target.files[0]);
+                    fileReader.onload = () => {props.setImageFile(fileReader.result)};
 
                     // if (event.target.value === "") {
                     //     props.setImageFile("");
@@ -52,13 +55,13 @@ const ImageInput = props => {
                 }}
             />
 
-            {props.image === "" && <div className="column-flexbox drag-n-drop-zone">
+            {props.imageTitle === "" && <div className="column-flexbox drag-n-drop-zone">
                 <p className="body-1">Drag&Drop image here</p>
                 <p className="body-2">or</p>
                 <p className="body-1">Click to browse images</p>
             </div>}
 
-            {props.image !== "" && <div className="column-flexbox" style={{alignItems: "center", gap: "15px"}}>
+            {props.imageTitle !== "" && <div className="column-flexbox" style={{alignItems: "center", gap: "15px"}}>
                 <div
                     className="relative-position-element"
                     style={{
@@ -137,7 +140,7 @@ const ImageInput = props => {
                         >
                             Crop Image
                         </button>
-                        <p className="error-message">{props.image !== "" && !props.isImageCropped && "Image must be cropped"}</p>
+                        <p className="error-message">{props.imageTitle !== "" && !props.isImageCropped && "Image must be cropped"}</p>
                     </div>
 
                     <button
@@ -154,7 +157,7 @@ const ImageInput = props => {
                         className="large-rounded-corners-element colored-button colored-button-4"
                         style={{width: "170px"}}
                         onClick={() => {
-                            props.setImage("");
+                            props.setImageTitle("");
                             props.setImageFile("");
                             props.setIsImageCropped(false);
                         }}

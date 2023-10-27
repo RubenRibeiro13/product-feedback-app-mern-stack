@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-/* const validator = require("validator");
-const fs = require("fs"); */
+const fs = require("fs");
 
 const userSchema = new mongoose.Schema({
     image: String,
@@ -23,39 +22,28 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.signup = async function(image, name, username, password) {
-    /* if (
-        !/^[A-Z][a-z]+ [A-Z][a-z]+$/.test(name) ||
-        !/^[a-z]+([_.][a-z]+)*([0-9]*|[.][0-9]+)$/.test(username) ||
-        !validator.isStrongPassword(password)
-    ) {
-        throw Error("Name, username and password fields must be properly filled");
-    } */
-
-
-    const userExists = await this.findOne({username: username});
+userSchema.statics.signup = async function(submittedUser) {
+    const userExists = await this.findOne({username: submittedUser.username});
     if (userExists) {
         throw Error("This username already exists");
     }
 
-    console.log(username);
+    const imagePath = "../frontend/public/images/users/" + submittedUser.username + ".png";
+    const imageBase64 = submittedUser.imageFile.replace(/^data:image\/\w+;base64,/, "");
+    fs.writeFile(imagePath, Buffer.from(imageBase64, "base64"), err => {});
 
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
+    const hash = await bcrypt.hash(submittedUser.password, salt);
     const user = await this.create({
-        image: image,
-        name: name,
-        username: username,
+        image: "images/users/" + submittedUser.username + ".png",
+        imageColor: submittedUser.imageColor,
+        imageWidth: submittedUser.imageWidth,
+        imageLeft: submittedUser.imageLeft,
+        imageTop: submittedUser.imageTop,
+        name: submittedUser.name,
+        username: submittedUser.username,
         password: hash
     });
-
-    /* fs.readFile(image, (err, data) => {
-        if (err) {
-            throw err;
-        }
-        
-        console.log(Buffer.from(data, "binary").toString("base64"));
-    }); */
 
     return user;
 }

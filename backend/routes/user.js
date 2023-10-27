@@ -20,12 +20,10 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-    const {image, name, username, password} = req.body;
-
-    console.log(req.body);
+    const {username} = req.body;
 
     try {
-        const user = await User.signup(image, name, username, password);
+        const user = await User.signup(req.body);
         const token = createToken(user._id);
         
         res.json({username, token});

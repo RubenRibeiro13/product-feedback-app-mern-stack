@@ -10,7 +10,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     const imageRef = useRef();
-    const [image, setImage] = useState("");
+    const [imageTitle, setImageTitle] = useState("");
     const [imageFile, setImageFile] = useState("");
     const [imageDimensions, setImageDimensions] = useState([0, 0]);
     const [imagePosition, setImagePosition] = useState([0, 0]);
@@ -25,6 +25,7 @@ const Signup = () => {
     const [username, setUsername] = useState("");
     const [isUsernameFocused, setIsUsernameFocused] = useState(false);
     const [isUsernameValid, setIsUsernameValid] = useState(true);
+    const [usernameExists, setUsernameExists] = useState(false);
 
     const [password, setPassword] = useState("");
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -228,55 +229,22 @@ const Signup = () => {
     const handleSubmit = async event => {
         event.preventDefault();
 
-        if ((image === "" || image !== "" && isImageCropped) && isNameValid && isUsernameValid && isPasswordValid) {
-            /* const imageBlob = await fetch(imageFile).then(res => res.blob()); */
+        if ((imageTitle === "" || imageTitle !== "" && isImageCropped) && isNameValid && isUsernameValid && isPasswordValid) {
             const randomR = Math.round(Math.random() * 255);
             const randomG = Math.round(Math.random() * 255);
             const randomB = Math.round(Math.random() * 255);
 
-            /* const userData = new FormData();
-            userData.append("image", image !== "" ? imageBlob : "");
-            userData.append("imageColor", "rgb(" + [randomR, randomG, randomB] + ")");
-            userData.append("imageWidth", image !== "" ? imageDimensions[0] / croppingSide : 1);
-            userData.append("imageLeft", image !== "" ? imagePosition[0] / croppingSide : 0);
-            userData.append("imageTop", image !== "" ? imagePosition[1] / croppingSide : 0);
-            userData.append("name", name);
-            userData.append("username", username);
-            userData.append("password", password); */
-
-            /* let user = {}; */
-            /* for (const value of userData.values()) {
-                console.log(value.toString());
-            } */
-            /* console.log(JSON.stringify(Object.fromEntries(userData))); */
-
-            /* const user = '{' +
-                '"image": ' + (image !== "" ? imageBlob : '""') + ', ' +
-                '"imageColor": "rgb(' + [randomR, randomG, randomB] + ')", ' +
-                '"imageWidth": ' + (image !== "" ? imageDimensions[0] / croppingSide : 1) + ', ' +
-                '"imageLeft": ' + (image !== "" ? imagePosition[0] / croppingSide : 0) + ', ' +
-                '"imageTop": ' + (image !== "" ? imagePosition[1] / croppingSide : 0) + ', ' +
-                '"name": "' + name + '", ' +
-                '"username": "' + username + '", ' +
-                '"password": "' + password + '"' +
-            '}'; */
-
             const user = {
-                image: imageFile,
+                imageFile,
+                imageTitle,
                 imageColor: "rgb(" + [randomR, randomG, randomB] + ")",
-                imageWidth: image !== "" ? imageDimensions[0] / croppingSide : 1,
-                imageLeft: image !== "" ? imagePosition[0] / croppingSide : 0,
-                imageTop: image !== "" ? imagePosition[1] / croppingSide : 0,
+                imageWidth: imageTitle !== "" ? imageDimensions[0] / croppingSide : 1,
+                imageLeft: imageTitle !== "" ? imagePosition[0] / croppingSide : 0,
+                imageTop: imageTitle !== "" ? imagePosition[1] / croppingSide : 0,
                 name,
                 username,
                 password
             };
-
-            /* console.log(userData.entries()); */
-
-            /* const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:4000/user/signup');
-            xhr.send(userData); */
 
             const response = await fetch("http://localhost:4000/user/signup", {
                 method: "POST",
@@ -284,11 +252,14 @@ const Signup = () => {
                 headers: {"Content-Type": "application/json"}
             });
             const json = await response.json();
-            /* console.log(await response.json()); */
 
-            localStorage.setItem("user", JSON.stringify(json));
-            dispatch({type: "login", payload: json});
-            navigate(-1);
+            if (json.error === "This username already exists") {
+                setUsernameExists(true);
+            } else {
+                localStorage.setItem("user", JSON.stringify(json));
+                dispatch({type: "login", payload: json});
+                navigate(-1);
+            }
         }
     }
 
@@ -318,8 +289,8 @@ const Signup = () => {
                             <p className="input-label">Choose a profile picture</p>
                             <ImageInput
                                 imageRef={imageRef}
-                                image={image}
-                                setImage={setImage}
+                                imageTitle={imageTitle}
+                                setImageTitle={setImageTitle}
                                 imageFile={imageFile}
                                 setImageFile={setImageFile}
                                 imageDimensions={imageDimensions}
@@ -381,9 +352,13 @@ const Signup = () => {
                                 onChange={event => {
                                     setUsername(event.target.value);
                                     setIsUsernameValid(/^[a-z]+([_.][a-z]+)*([0-9]*|[.][0-9]+)$/.test(event.target.value));
+                                    setUsernameExists(false);
                                 }}
                             />
-                            <p className="error-message">{!isUsernameValid && "Invalid username"}</p>
+                            <p className="error-message">
+                                {!isUsernameValid && "Invalid username"}
+                                {usernameExists && "This username already exists"}
+                            </p>
                         </div>
 
                         <div>
