@@ -1,6 +1,7 @@
 import {useState, useRef, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import fetchFunction from "../functions/fetchFunction";
 import changeIsMenuOpen from "../functions/changeIsMenuOpen";
 import selectOption from "../functions/selectOption";
 import MenuFeedback from "../components/MenuFeedback";
@@ -11,10 +12,8 @@ const NewFeedback = () => {
     const dispatch = useProductRequestsDispatch();
     useEffect(() => {
         const fetchProductRequests = async () => {
-            const response = await fetch("http://localhost:4000/new-feedback");
-            const json = await response.json();
-
-            dispatch({type: "read", payload: json});
+            const json = fetchFunction("/readProductRequests", "GET", null);
+            json.then(json => dispatch({type: "read", payload: json}));
         }
 
         fetchProductRequests();
@@ -91,14 +90,8 @@ const NewFeedback = () => {
                 comments: []
             };
 
-            const response = await fetch("http://localhost:4000/new-feedback", {
-                method: "POST",
-                body: JSON.stringify(productRequest),
-                headers: {"Content-Type": "application/json"}
-            });
-            const json = await response.json();
-
-            dispatch({type: "create", payload: json});
+            const json = fetchFunction("/new-feedback", "POST", JSON.stringify(productRequest));
+            json.then(json => dispatch({type: "create", payload: json}));
             navigate("/suggestions");
         }
     }

@@ -4,12 +4,12 @@ const Comment = require("../models/commentModel");
 const Reply = require("../models/replyModel");
 const data = require("../data");
 
-router.get("/", async (req, res) => {
+/* router.get("/", async (req, res) => {
     const productRequests = await ProductRequest.find({});
     res.json(productRequests);
-});
+}); */
 
-router.post("/:suggestionId", async (req, res) => {
+/* router.post("/:suggestionId", async (req, res) => {
     const user = JSON.parse(data).currentUser;
 
     if (req.body.buttonName === "comment") {
@@ -53,9 +53,9 @@ router.post("/:suggestionId", async (req, res) => {
 
         }
     }
-});
+}); */
 
-router.get("/edit-feedback/:suggestionId", async (req, res) => {
+/* router.get("/edit-feedback/:suggestionId", async (req, res) => {
     await ProductRequest.findById(req.params.suggestionId);
 });
 
@@ -75,6 +75,6 @@ router.patch("/edit-feedback/:suggestionId", async (req, res) => {
 
 router.delete("/edit-feedback/:suggestionId", (req, res) => {
     ProductRequest.findByIdAndDelete(req.params.suggestionId);
-});
+}); */
 
 module.exports = router;

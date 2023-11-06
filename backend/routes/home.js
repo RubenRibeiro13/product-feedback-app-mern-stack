@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const ProductRequest = require("../models/productRequestModel");
 
-router.get("/suggestions", async (req, res) => {
+router.get("/readProductRequests", async (req, res) => {
+    const productRequests = await ProductRequest.find({});
+    res.json(productRequests);
+});
+
+/* router.get("/suggestions", async (req, res) => {
     const productRequests = await ProductRequest.find({});
     res.json(productRequests);
 });
@@ -14,7 +19,7 @@ router.get("/roadmap", async (req, res) => {
 router.get("/new-feedback", async (req, res) => {
     const productRequests = await ProductRequest.find({});
     res.json(productRequests);
-});
+}); */
 
 router.post("/new-feedback", async (req, res) => {
     const productRequest = await ProductRequest.create(req.body);

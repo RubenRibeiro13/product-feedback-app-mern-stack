@@ -1,5 +1,6 @@
 import {useEffect} from "react";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import fetchFunction from "../functions/fetchFunction";
 import FeedbackGeneratorRoadmap from "../components/FeedbackGeneratorRoadmap";
 import NonSuggestionProductRequestsColumn from "../components/NonSuggestionProductRequestsColumn";
 
@@ -9,10 +10,8 @@ const Roadmap = () => {
     const dispatch = useProductRequestsDispatch();
     useEffect(() => {
         const fetchProductRequests = async () => {
-            const response = await fetch("http://localhost:4000/roadmap");
-            const json = await response.json();
-
-            dispatch({type: "read", payload: json});
+            const json = fetchFunction("/readProductRequests", "GET", null);
+            json.then(json => dispatch({type: "read", payload: json}));
         }
         
         fetchProductRequests();

@@ -1,6 +1,8 @@
 import {useState, useRef, useEffect} from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import fetchFunction from "../functions/fetchFunction";
+import capitalize from "../functions/capitalize";
 import changeIsMenuOpen from "../functions/changeIsMenuOpen";
 import selectOption from "../functions/selectOption";
 import MenuFeedback from "../components/MenuFeedback";
@@ -10,14 +12,8 @@ const EditFeedback = () => {
 
     const dispatch = useProductRequestsDispatch();
     useEffect(() => {
-        const fetchProductRequests = async () => {
-            const response = await fetch("http://localhost:4000/feedback-detail");
-            const json = await response.json();
-
-            dispatch({type: "read", payload: json});
-        }
-
-        fetchProductRequests();
+        const json = fetchFunction("/readProductRequests", "GET", null);
+        json.then(json => dispatch({type: "read", payload: json}));
     }, [dispatch]);
 
     const productRequests = useProductRequests();
@@ -40,7 +36,7 @@ const EditFeedback = () => {
     const navigate = useNavigate();
 
     const titleRef = useRef();
-    const [title, setTitle] = useState(initialTitle);
+    const [title, setTitle] = useState();
     useEffect(() => {setTitle(initialTitle)}, [initialTitle]);
     const [isTitleFocused, setIsTitleFocused] = useState(false);
     const [isTitleValid, setIsTitleValid] = useState(true);
@@ -49,27 +45,15 @@ const EditFeedback = () => {
     const categoriesMenuItemRef = useRef();
     const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
     const categoriesList = ["Feature", "UI", "UX", "Enhancement", "Bug"];
-    const [selectedCategory, setSelectedCategory] = useState(
-        !["ui", "ux"].includes(initialCategory) ?
-            initialCategory.slice(0, 1).toUpperCase() + initialCategory.slice(1)
-        : initialCategory.toUpperCase()
-    );
-    useEffect(() => {setSelectedCategory(
-        !["ui", "ux"].includes(initialCategory) ?
-            initialCategory.slice(0, 1).toUpperCase() + initialCategory.slice(1)
-        : initialCategory.toUpperCase()
-    )}, [initialCategory]);
+    const [selectedCategory, setSelectedCategory] = useState();
+    useEffect(() => {setSelectedCategory(initialCategory)}, [initialCategory]);
 
     const statusesMenuLabelRef = useRef();
     const statusesMenuItemRef = useRef();
     const [isStatusesMenuOpen, setIsStatusesMenuOpen] = useState(false);
     const statusesList = ["Suggestion", "Planned", "In-Progress", "Live"];
-    const [selectedStatus, setSelectedStatus] = useState(
-        initialStatus === "in-progress" ? "In-Progress" : initialStatus.slice(0, 1).toUpperCase() + initialStatus.slice(1)
-    );
-    useEffect(() => {setSelectedStatus(
-        initialStatus === "in-progress" ? "In-Progress" : initialStatus.slice(0, 1).toUpperCase() + initialStatus.slice(1)
-    )}, [initialStatus]);
+    const [selectedStatus, setSelectedStatus] = useState();
+    useEffect(() => {setSelectedStatus(initialStatus)}, [initialStatus]);
 
     const detailRef = useRef();
     const [detail, setDetail] = useState(initialDetail);
@@ -118,11 +102,9 @@ const EditFeedback = () => {
     /* Delete product request */
 
     const deleteProductRequest = async () => {
-        await fetch("http://localhost:4000/edit-feedback/" + suggestionId, {
-            method: "DELETE",
-        });
-        
-        navigate("/suggestions");
+        const json = fetchFunction("/edit-feedback/" + suggestionId, "DELETE", null);
+        json.then(json => dispatch({type: "delete", payload: json}));
+        navigate(-2);
     }
 
     /* Submit form */
@@ -148,13 +130,9 @@ const EditFeedback = () => {
                 comments: comments
             };
 
-            await fetch("http://localhost:4000/edit-feedback/" + suggestionId, {
-                method: "PATCH",
-                body: JSON.stringify(productRequest),
-                headers: {"Content-Type": "application/json"}
-            });
-
-            navigate("/suggestions");
+            const json = fetchFunction("/edit-feedback/" + suggestionId, "PATCH", JSON.stringify(productRequest));
+            json.then(json => dispatch({type: "update", payload: json}));
+            navigate(-1);
         }
     }
 
@@ -191,7 +169,7 @@ const EditFeedback = () => {
                             <p className="input-label">Add a short, descriptive headline</p>
                             <input
                                 type="text"
-                                value={title}
+                                value={title || ""}
                                 className="body-2 small-rounded-corners-element"
                                 style={{
                                     outline: isTitleValid ? (isTitleFocused && "1px solid #4661E6") : "1px solid #D73737"
@@ -215,7 +193,9 @@ const EditFeedback = () => {
                                 isMenuOpen={isCategoriesMenuOpen}
                                 changeIsMenuOpen={changeIsCategoriesMenuOpen}
                                 optionsList={categoriesList}
-                                selectedOption={selectedCategory}
+                                selectedOption={selectedCategory && (
+                                    !["ui", "ux"].includes(selectedCategory) ? capitalize(selectedCategory) : selectedCategory.toUpperCase()
+                                )}
                                 selectOption={selectCategory}
                                 labelRef={categoriesMenuLabelRef}
                                 itemRef={categoriesMenuItemRef}
@@ -230,7 +210,9 @@ const EditFeedback = () => {
                                 isMenuOpen={isStatusesMenuOpen}
                                 changeIsMenuOpen={changeIsStatusesMenuOpen}
                                 optionsList={statusesList}
-                                selectedOption={selectedStatus}
+                                selectedOption={selectedStatus && (
+                                    selectedStatus === "in-progress" ? "In-Progress" : capitalize(selectedStatus)
+                                )}
                                 selectOption={selectStatus}
                                 labelRef={statusesMenuLabelRef}
                                 itemRef={statusesMenuItemRef}

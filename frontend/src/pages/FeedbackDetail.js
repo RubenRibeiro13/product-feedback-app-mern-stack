@@ -1,6 +1,7 @@
 import {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useProductRequests, useProductRequestsDispatch} from "../context/ProductRequestsContext";
+import fetchFunction from "../functions/fetchFunction";
 import FeedbackEditor from "../components/FeedbackEditor";
 import ClickedProductRequest from "../components/ClickedProductRequest";
 import ClickedProductRequestCommentsSection from "../components/ClickedProductRequestCommentsSection";
@@ -12,10 +13,8 @@ const FeedbackDetail = () => {
     const dispatch = useProductRequestsDispatch();
     useEffect(() => {
         const fetchProductRequests = async () => {
-            const response = await fetch("http://localhost:4000/feedback-detail");
-            const json = await response.json();
-
-            dispatch({type: "read", payload: json});
+            const json = fetchFunction("/readProductRequests", "GET", null);
+            json.then(json => dispatch({type: "read", payload: json}));
         }
 
         fetchProductRequests();

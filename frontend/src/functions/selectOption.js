@@ -8,7 +8,7 @@ const selectOption = (event, selectedOption, setSelectedOption, setIsMenuOpen, o
             setIsMenuOpen(false);
             setFocusedElement(menuOf + "MenuLabel");
         } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-            const selectedOptionIndex = optionsList.findIndex(option => {return option === selectedOption});
+            const selectedOptionIndex = optionsList.findIndex(option => {return option.toLowerCase() === selectedOption.toLowerCase()});
 
             if (event.key === "ArrowUp" && selectedOptionIndex !== 0) {
                 setSelectedOption(optionsList[selectedOptionIndex - 1]);

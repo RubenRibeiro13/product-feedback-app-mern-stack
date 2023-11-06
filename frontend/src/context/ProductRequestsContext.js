@@ -56,11 +56,13 @@ export const useProductRequestsDispatch = () => {
 
 const productRequestsReducer = (productRequests, action) => {
     switch (action.type) {
-        case "read": {
-            return action.payload;
-        }
-        case "create": {
-            return [action.payload, ...productRequests]
+        case "read": {return action.payload}
+        case "create": {return [action.payload, ...productRequests]}
+        case "delete": {return productRequests.filter(productRequest => {return productRequest._id !== action.payload._id})}
+        case "update": {
+            const index = productRequests.findIndex(productRequest => {return productRequest._id === action.payload._id});
+            productRequests[index] = action.payload;
+            return productRequests;
         }
     }
 }
